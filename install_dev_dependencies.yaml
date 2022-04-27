@@ -1,0 +1,30 @@
+- name: install python
+  become: true
+  apt:
+    name: python3
+
+- name: copy requirements.txt
+  copy:
+    src: requirements.txt
+    dest: /tmp/requirements.txt
+
+- name: download TLJH install script
+  become: true
+  get_url:
+    url: https://tljh.jupyter.org/bootstrap.py
+    dest: /tmp/tljh_jupyter.py
+    mode: 7777
+
+- name: run the TLJH install script
+  become: true
+  expect:
+    command: 'python3 /tmp/tljh_jupyter.py --admin {{admin_user}}:{{admin_password}} --user-requirements-txt-url file:///tmp/requirements.txt'
+    responses:
+      Question:
+        - ''
+
+- name: delete install script
+  become: true
+  file:
+    path: /tmp/tljh_jupyter.py
+    state: absent

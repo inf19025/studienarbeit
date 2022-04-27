@@ -1,0 +1,15 @@
+- name: Enable HTTPS
+  become: true
+  command: 'tljh-config set https.enabled true'
+
+- name: Set letsencrypt email
+  become: true
+  command: 'tljh-config set https.letsencrypt.email {{ letsencrypt_email }}'
+
+- name: Add domain for letsencrypt
+  become: true
+  command: 'tljh-config add-item https.letsencrypt.domains {{ letsencrypt_domain }}'
+
+- name: Reload Proxy
+  become: true
+  command: 'tljh-config reload proxy'

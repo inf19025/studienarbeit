@@ -1,0 +1,31 @@
+- name: Download Anaconda
+  get_url:
+    url: https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+    dest: /tmp/install_anaconda.sh
+    checksum: md5:40354cb10cadaf6b1cfeed36610839f4
+    mode: 0550
+- name: Create Conda Folder
+  become: true
+  file:
+    path: /opt/anaconda3
+    state: directory
+    owner: '{{ user_name }}'
+- name: Run The Anaconda Installer
+  shell: /tmp/install_anaconda.sh -s -u -p /opt/anaconda3
+- name: Delete The Installer
+  become: true
+  file:
+    state: absent
+    path: /tmp/install_anaconda.sh
+- name: Add read permissions
+  become: true
+  file:
+    path: /opt/anaconda3
+    mode: +r
+    recurse: yes
+- name: Add execution permissions
+  become: true
+  file:
+    path: /opt/anaconda3/bin
+    mode: +x
+    recurse: true

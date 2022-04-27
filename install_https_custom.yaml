@@ -1,0 +1,32 @@
+- name: Copy all cert files
+  copy:
+    src: ./https_cert
+    dest: /etc/mycerts
+
+- name: Find Key File
+  find:
+    paths: '/etc/mycerts/'
+    contains: '/(.key)$/i'
+  register: key_file
+
+- name: Find Cert File
+  find:
+    paths: '/etc/mycerts/'
+    contains: '/(.cert)$/i'
+  register: cert_file
+
+- name: Enable HTTPS
+  become: true
+  command: 'tljh-config set https.enabled true'
+
+- name: Set Key File
+  become: true
+  command: 'tljh-config set https.tls.key {{ key_file }}'
+
+- name: Set Cert File
+  become: true
+  command: 'tljh-config set https.tls.cert {{ cert_file }}'
+
+- name: Reload Proxy
+  become: true
+  command: 'tljh-config reload proxy'
