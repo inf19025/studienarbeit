@@ -43,3 +43,8 @@
 
     - include: install_dev_dependencies.yaml
     - include: firewall.yaml
+
+    # I found, that restarting fixes conda and environments
+    - name: restart
+      become: true
+      reboot:

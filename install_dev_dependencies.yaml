@@ -3,6 +3,21 @@
   apt:
     name: python3
 
+- name: install python-dev
+  become: true
+  apt:
+    name: python3-dev
+
+- name: install git
+  become: true
+  apt:
+    name: git
+
+- name: install curl
+  become: true
+  apt:
+    name: curl
+
 - name: copy requirements.txt
   copy:
     src: requirements.txt
@@ -17,14 +32,21 @@
 
 - name: run the TLJH install script
   become: true
-  expect:
-    command: 'python3 /tmp/tljh_jupyter.py --admin {{admin_user}}:{{admin_password}} --user-requirements-txt-url file:///tmp/requirements.txt'
-    responses:
-      Question:
-        - ''
+  command: 'python3 /tmp/tljh_jupyter.py --admin {{admin_user}}:{{admin_password}} --user-requirements-txt-url file:///tmp/requirements.txt'
+  register: result
+  ignore_errors: true
+
+- debug: var=result.stderr_lines || result.stdout_lines
+  when: result.failed == true
 
 - name: delete install script
   become: true
   file:
     path: /tmp/tljh_jupyter.py
+    state: absent
+
+- name: delete requirements
+  become: true
+  file:
+    path: /tmp/requirements.txt
     state: absent
