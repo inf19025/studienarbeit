@@ -16,3 +16,16 @@
     to_port: '443'
     proto: tcp
     rule: allow
+
+- name: enable MLflow interface and api
+  become: true
+  ufw:
+    to_port: '5000'
+    proto: tcp
+    role: allow
+
+- name: enable SSH connection
+  become: true
+  ufw:
+    to_port: '22'
+    role: allow
