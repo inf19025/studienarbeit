@@ -1,0 +1,62 @@
+- name: Install mlflow
+  become: true
+  command:
+    cmd: sudo -E ./conda install -y mlflow
+    chdir: /opt/tljh/user/bin/
+  args:
+    warn: false
+
+- name: copy environment variables
+  become: true
+  template:
+    src: environment_vars.py
+    dest: /opt/tljh/config/jupyterhub_config.d/
+
+- name: reload tljh
+  become: true
+  command: tljh-config reload
+
+- name: create mlflow storage folder
+  become: true
+  file:
+    path: /mlflow
+    state: directory
+    mode: 0777
+
+- name: create mlflow artifact storage folder
+  become: true
+  file:
+    path: /mlflow/artifacts
+    state: directory
+    mode: 0777
+
+# - name: copy launch script
+#   become: true
+#   template:
+#     src: launch_mlflow_server.sh
+#     dest: /mlflow/launch_mlflow_server.sh
+#     mode: 0777
+
+- name: copy init script to /etc/init.d
+  become: true
+  template:
+    src: launch_mlflow_init.sh
+    dest: /etc/init.d/launch_mlflow_init.sh
+    mode: 0777
+
+- name: ensure python passlib is present for htpasswd module
+  become: true
+  apt: "pkg=python3-passlib state=present"
+
+- name: create users file for traefik
+  become: true
+  htpasswd:
+    name: '{{ mlflow_user }}'
+    password: '{{ mlflow_pass }}'
+    dest: /traefik/users
+
+- name: add custom traefik config to tljh
+  become: true
+  copy:
+    src: mlflow_traefik.toml
+    dest: /opt/tljh/state/rules/mlflow_traefik.toml

@@ -4,3 +4,11 @@ admin_user: admin
 admin_password: admin
 letsencrypt_mail: 
 letsencrypt_domain: 
+mlflow_artifact_storage: /mlflow/artifacts
+mlflow_user: max
+mlflow_pass: password
+# use for vars like AWS_ACCESS_KEY_ID in the tljh terminal environment
+extra_env_vars:
+  - aws:
+    name: AWS_ACCESS_KEY_ID
+    value: Test

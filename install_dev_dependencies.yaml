@@ -36,7 +36,8 @@
   register: result
   ignore_errors: true
 
-- debug: var=result.stderr_lines || result.stdout_lines
+- debug: 
+  # var: result.stderr_lines or result.stdout_lines
   when: result.failed == true
 
 - name: delete install script
