@@ -46,9 +46,9 @@
     - include: setup_mlflow.yaml
 
     # I found, that restarting fixes conda and environments
-    # - name: restart
-    #   become: true
-    #   reboot:
+    - name: restart
+      become: true
+      reboot:
   
   # - import_playbook: install_https_custom.yaml
   # - import_playbook: install_https_lets_encrypt.yaml

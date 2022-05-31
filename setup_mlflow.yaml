@@ -21,14 +21,14 @@
   file:
     path: /mlflow
     state: directory
-    mode: 0777
+    mode: 0770
 
 - name: create mlflow artifact storage folder
   become: true
   file:
     path: /mlflow/artifacts
     state: directory
-    mode: 0777
+    mode: 0770
 
 # - name: copy launch script
 #   become: true
@@ -37,12 +37,30 @@
 #     dest: /mlflow/launch_mlflow_server.sh
 #     mode: 0777
 
+- name: create /mlflow/bin
+  become: true
+  file:
+    path: /mlflow/bin
+    state: directory
+    mode: 0770
+
 - name: copy init script to /etc/init.d
   become: true
   template:
-    src: launch_mlflow_init.sh
-    dest: /etc/init.d/launch_mlflow_init.sh
+    src: launch_mlflow.sh
+    dest: /mlflow/bin/launch.sh
     mode: 0777
+
+- name: copy systemd service
+  become: true
+  copy:
+    src: mlflow.service
+    dest: /etc/systemd/system/mlflow.service
+    mode: 0770
+
+- name: enable systemd service
+  become: true
+  command: "systemctl enable mlflow.service"
 
 - name: ensure python passlib is present for htpasswd module
   become: true

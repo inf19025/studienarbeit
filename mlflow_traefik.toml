@@ -6,6 +6,10 @@
     rule = "PathPrefixStrip:/mlflow"
     middlewares = ["mlflow"]
 
+[frontends.mlflow.routes.mlflowUse]
+    rule = "PathPrefix:/#"
+    backend = "mlflow"
+
 [frontends.middlewares]
     [frontends.middlewares.mlflow.basicAuth]
         usersFile = "/traefik/users"

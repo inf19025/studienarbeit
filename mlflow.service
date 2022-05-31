@@ -1,0 +1,9 @@
+[Unit]
+Description=Start MLflow
+
+[Service]
+Type=oneshot
+ExecStart=/mlflow/bin/launch.sh
+
+[Install]
+WantedBy=multi-user.target
