@@ -1,21 +1,12 @@
 
-[frontends.mlflow]
-    backend = "mlflow"
+[frontends.frontend_mlflow]
+    entryPoints = ["mlflow"]
+    backend = "backend_mlflow"
 
-[frontends.mlflow.routes.mlflow]
-    rule = "PathPrefixStrip:/mlflow"
-    middlewares = ["mlflow"]
-
-[frontends.mlflow.routes.mlflowUse]
-    rule = "PathPrefix:/#"
-    backend = "mlflow"
-
-[frontends.middlewares]
-    [frontends.middlewares.mlflow.basicAuth]
-        usersFile = "/traefik/users"
-    [frontends.middlewares.mlflow.stripPrefix]
-        prefixes = ["/mlflow"]
+[frontends.frontend_mlflow.routes.test]
+    rule = "PathPrefix:/"
 
 
-[backends.mlflow.servers.server1]
+[backends.backend_mlflow.servers.server1]
     url = "http://127.0.0.1:5000"
+    weight = 1

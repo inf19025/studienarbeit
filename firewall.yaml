@@ -23,3 +23,10 @@
     to_port: '22'
     proto: tcp
     rule: allow
+
+- name: enable mlflow connection
+  become: true
+  ufw:
+    to_port: '8081'
+    proto: tcp
+    rule: allow

@@ -30,13 +30,6 @@
     state: directory
     mode: 0770
 
-# - name: copy launch script
-#   become: true
-#   template:
-#     src: launch_mlflow_server.sh
-#     dest: /mlflow/launch_mlflow_server.sh
-#     mode: 0777
-
 - name: create /mlflow/bin
   become: true
   file:
@@ -44,7 +37,7 @@
     state: directory
     mode: 0770
 
-- name: copy init script to /etc/init.d
+- name: copy launch script
   become: true
   template:
     src: launch_mlflow.sh
@@ -73,8 +66,18 @@
     password: '{{ mlflow_pass }}'
     dest: /traefik/users
 
-- name: add custom traefik config to tljh
+- name: add custom traefik routes
   become: true
   copy:
     src: mlflow_traefik.toml
     dest: /opt/tljh/state/rules/mlflow_traefik.toml
+
+- name: add custom traefik entrypoint
+  become: true
+  copy:
+    src: mlflow_traefik_config.toml
+    dest: /opt/tljh/config/traefik_config.d/mlflow_traefik_config.toml
+
+- name: restart proxy
+  become: true
+  command: tljh-config reload proxy

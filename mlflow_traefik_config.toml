@@ -1,0 +1,7 @@
+[entryPoints]
+    [entryPoints.mlflow]
+        address = ":8081"
+
+    [entryPoints.mlflow.auth.basic]
+        removeHeader = true
+        usersFile = "/traefik/users"

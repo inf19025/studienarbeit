@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Anaconda Navigator
-Exec=/opt/anaconda3/bin/anaconda-navigator
-Icon=/opt/anaconda3/share/icons/hicolor/scalable/apps/notebook.svg
-Type=Application
-StartupNotify=false
-Categories=Development;Manager;

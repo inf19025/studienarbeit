@@ -1,51 +1,13 @@
 - hosts: all
-  roles:
-    # - nvidia.nvidia_driver
   vars_files:
     - vars.yaml
   tasks:
-    - name: install snap
-      become: true
-      apt:
-        name: snap
 
-    - name: install docker
-      become: true
-      snap:
-        name: docker
-        classic: yes
-
-    - name: create docker group
-      become: true
-      group:
-        name: docker
-        state: present
-
-    - name: create user
-      become: true
-      user:
-        name: '{{ user_name }}'
-        password: '{{ user_password }}'
-        group: users
-        groups:
-          - docker
-          - adm
-          - audio
-          - video
-          - cdrom
-          - dip
-          - lxd
-        shell: /bin/bash
-
-    # - name: restart
-    #   become: true
-    #   reboot:
-
-    # - include: install_dev_dependencies.yaml
-    # - include: firewall.yaml
+    - include: install_dev_dependencies.yaml
+    - include: firewall.yaml
     - include: setup_mlflow.yaml
 
-    # I found, that restarting fixes conda and environments
+    I found, that restarting fixes conda and environments
     - name: restart
       become: true
       reboot:

@@ -1,5 +1,3 @@
-user_name: max
-user_password: $6$V8QuvKbR.kLp$eWGzkoihcRugDxnCAav2HMAiFfu9PUYrpsmUuJhI/xyhaf.fGNakeDeMliXX91kdMKUseyuEVyST6PanIjL4R0
 admin_user: admin
 admin_password: admin
 letsencrypt_mail: 
